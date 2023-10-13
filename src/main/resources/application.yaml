@@ -1,0 +1,19 @@
+server:
+    port: 2005
+    
+spring:
+    application:
+        name: IMSOrder
+    jackson:
+        default-property-inclusion: non-null
+
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/imsdata?createDatabaseIfNotExist=true
+        username: root
+        password: root
+
+    jpa:
+        show-sql: false
+        hibernate:
+            ddl-auto: update
