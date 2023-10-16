@@ -1,0 +1,43 @@
+pipeline {
+    agent any
+
+    tools {
+        
+        maven "MAVEN_HOME"
+    }
+
+    stages {
+    
+    	stage('Initialize') {
+    		steps {
+    			script {
+    				echo "==============="
+    				echo "Target :: $(Target1)"
+    					}
+    				}
+    			}
+        stage('Checkout') {
+            steps {
+                // Check out the source code from the Git repository
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: '44f06014-2e08-4338-941a-b05b8bbb36cc', url: 'https://ec2-44-217-113-167.compute-1.amazonaws.com/janhavi23raj/demoproject.git']])
+            }
+        }
+
+        stage('Build') {
+            steps {
+                // Build your project (replace with your build command)
+                sh 'mvn clean package'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'The pipeline completed successfully!'
+        }
+
+        failure {
+            echo 'The pipeline failed!'
+        }
+    }
+}
