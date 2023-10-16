@@ -12,7 +12,9 @@ pipeline {
     		steps {
     			script {
     				echo "==============="
+    				echo "Targets"
     				echo "Target :: $(Target1)"
+    				echo "TargetInstall :: $(Target2)"
     					}
     				}
     			}
