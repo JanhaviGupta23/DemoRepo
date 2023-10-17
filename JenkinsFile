@@ -21,7 +21,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Check out the source code from the Git repository
-                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: '44f06014-2e08-4338-941a-b05b8bbb36cc', url: 'https://ec2-44-217-113-167.compute-1.amazonaws.com/janhavi23raj/demoproject.git']])
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'JanhaviGupta23', url: 'https://github.com/JanhaviGupta23/DemoRepo.git']])
             }
         }
 
