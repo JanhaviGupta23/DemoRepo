@@ -1,45 +1,61 @@
 pipeline {
-    agent any
 
-    tools {
-        
-        maven "MAVEN_HOME"
+ 
+
+  agent any
+  parameters {
+        string(name: 'Goal1', defaultValue: 'clean', description: 'Goal1 name')
+        string(name: 'Goal2', defaultValue: 'install', description: 'Goal2 name')
     }
 
+ 
+
+    tools {
+        // Install the Maven version configured as "M3" and add it to the path.
+        maven "MAVEN_HOME"
+    }
     stages {
-    
-    	stage('Initialize') {
-    		steps {
-    			script {
-    				echo "==============="
-    				echo "Targets"
-    				echo "Target :: ${Target1}"
-    				echo "TargetInstall :: ${Target2}"
-    					}
-    				}
-    			}
-        stage('Checkout') {
-            steps {
-                // Check out the source code from the Git repository
-                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'JanhaviGupta23', url: 'https://github.com/JanhaviGupta23/DemoRepo.git']])
-            }
-        }
+
+ 
 
         stage('Build') {
             steps {
-                // Build your project (replace with your build command)
-                sh 'mvn clean package'
+                // Get some code from a GitHub repository
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: '44f06014-2e08-4338-941a-b05b8bbb36cc', url: 'https://ec2-44-217-113-167.compute-1.amazonaws.com/janhavi23raj/demoproject.git']])
+
+ 
+
+ 
+
+                echo "  Goal1 = ${params.Goal1}"
+                echo "  Goal2 = ${params.Goal2}"
+
+ 
+
+                // Run Maven on a Unix agent.
+                sh "mvn -Dmaven.test.failure.ignore=true ${params.Goal1} ${params.Goal2}"
+
+
+ 
+
+                sh "ls -lrt"
+
+ 
+
+                // To run Maven on a Windows agent, use
+                // bat "mvn -Dmaven.test.failure.ignore=true clean package"
             }
-        }
-    }
 
-    post {
-        success {
-            echo 'The pipeline completed successfully!'
-        }
+ 
 
-        failure {
-            echo 'The pipeline failed!'
+            post {
+                // If Maven was able to run the tests, even if some of the test
+                // failed, record the test results and archive the jar file.
+                success {
+                    junit '**/target/surefire-reports/TEST-*.xml'
+                    archiveArtifacts 'target/*.jar'
+                }
+            }
         }
     }
 }
