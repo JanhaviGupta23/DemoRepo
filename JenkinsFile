@@ -13,8 +13,8 @@ pipeline {
     			script {
     				echo "==============="
     				echo "Targets"
-    				echo "Target :: $(Target1)"
-    				echo "TargetInstall :: $(Target2)"
+    				echo "Target :: ${Target1}"
+    				echo "TargetInstall :: ${Target2}"
     					}
     				}
     			}
